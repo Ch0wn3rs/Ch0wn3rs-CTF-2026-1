@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boring Corp – Employee Dashboard</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #07071a;
+      color: #c9d1d9;
+      min-height: 100vh;
+    }
+    header {
+      background: #10102a;
+      border-bottom: 1px solid #1e1e4a;
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { font-size: 1.3rem; font-weight: 700; color: #a5b4fc; }
+    .user-info { font-size: 0.85rem; color: #6b6b9a; }
+    main { max-width: 900px; margin: 50px auto; padding: 0 20px; }
+    h1 { font-size: 1.8rem; color: #e0e0ff; margin-bottom: 8px; }
+    .subtitle { color: #6b6b9a; margin-bottom: 36px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+    .card {
+      background: #10102a;
+      border: 1px solid #1e1e4a;
+      border-radius: 12px;
+      padding: 28px 24px;
+    }
+    .card .icon { font-size: 2rem; margin-bottom: 12px; }
+    .card h2 { font-size: 1rem; color: #a5b4fc; margin-bottom: 6px; }
+    .card p { font-size: 0.85rem; color: #6b6b9a; }
+    .locked { opacity: 0.5; position: relative; }
+    .lock-badge {
+      position: absolute;
+      top: 14px; right: 14px;
+      background: #f87171;
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
+    .flag-card {
+      margin-top: 32px;
+      background: #10102a;
+      border: 1px solid #2d1f6e;
+      border-radius: 12px;
+      padding: 28px 24px;
+    }
+    .flag-card h2 { color: #f87171; margin-bottom: 8px; }
+    .flag-card p { font-size: 0.9rem; color: #6b6b9a; margin-bottom: 16px; }
+    .btn {
+      padding: 10px 24px;
+      background: linear-gradient(90deg, #7c71f5, #5e55d6);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.85; }
+    #flagResult {
+      margin-top: 14px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: #4ade80;
+      word-break: break-all;
+    }
+    #flagError {
+      margin-top: 14px;
+      font-size: 0.85rem;
+      color: #f87171;
+    }
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.8rem;
+      color: #2d2d5a;
+      border-top: 1px solid #1e1e4a;
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="logo">🏢 Boring Corp</span>
+    <span class="user-info" id="userInfo">Loading…</span>
+  </header>
+
+  <main>
+    <h1>Employee Dashboard</h1>
+    <p class="subtitle">Welcome to the Boring Corp portal. You are logged in as a <strong>standard employee</strong>.</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="icon">📊</div>
+        <h2>Quarterly Reports</h2>
+        <p>View this quarter's performance metrics and KPI dashboards.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📋</div>
+        <h2>HR Self-Service</h2>
+        <p>Update personal details, request leave and view payslips.</p>
+      </div>
+      <div class="card locked">
+        <span class="lock-badge">ADMIN</span>
+        <div class="icon">⚙️</div>
+        <h2>System Config</h2>
+        <p>Global infrastructure settings – admin role required.</p>
+      </div>
+      <div class="card locked">
+        <span class="lock-badge">ADMIN</span>
+        <div class="icon">🗂️</div>
+        <h2>Audit Logs</h2>
+        <p>Full employee activity audit trail – admin role required.</p>
+      </div>
+    </div>
+
+    <!-- Secret flag endpoint – needs Admin JWT -->
+    <div class="flag-card">
+      <h2>🚩 Admin Secret</h2>
+      <p>
+        The <code>/api/flag</code> endpoint is restricted to <strong>admin</strong>
+        role only.  Your current token has <code>role: user</code>.
+        Can you forge an admin token?
+      </p>
+      <button class="btn" id="getFlagBtn">Try /api/flag</button>
+      <p id="flagResult"></p>
+      <p id="flagError"></p>
+    </div>
+  </main>
+
+  <footer>Boring Corp &copy; 2026 – Making corporate life predictably dull since 1987.</footer>
+
+  <script>
+    const token = localStorage.getItem('jwt') || '';
+
+    // Decode JWT payload (no verification – just for display)
+    function decodePayload(tok) {
+      try {
+        return JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
+      } catch { return {}; }
+    }
+
+    if (!token) {
+      document.getElementById('userInfo').textContent = 'Not logged in';
+    } else {
+      const payload = decodePayload(token);
+      document.getElementById('userInfo').textContent =
+        `${payload.username || 'unknown'} | role: ${payload.role || '?'}`;
+    }
+
+    document.getElementById('getFlagBtn').addEventListener('click', async () => {
+      const resEl = document.getElementById('flagResult');
+      const errEl = document.getElementById('flagError');
+      resEl.textContent = '';
+      errEl.textContent = '';
+
+      const currentToken = localStorage.getItem('jwt') || token;
+      if (!currentToken) { errEl.textContent = 'No token found in localStorage.'; return; }
+
+      const res = await fetch('/api/flag', {
+        headers: { 'Authorization': `Bearer ${currentToken}` },
+      });
+      const data = await res.json();
+      if (data.flag) {
+        resEl.textContent = '🏁 ' + data.flag;
+      } else {
+        errEl.textContent = data.error || 'Unknown error';
+      }
+    });
+  </script>
+</body>
+</html>

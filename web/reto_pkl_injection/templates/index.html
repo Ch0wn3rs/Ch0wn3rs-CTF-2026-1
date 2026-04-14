@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenML – Submit &amp; Evaluate Your Model</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+      min-height: 100vh;
+    }
+    header {
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header .logo { font-size: 1.4rem; font-weight: 700; color: #58a6ff; }
+    header .tagline { font-size: 0.85rem; color: #8b949e; }
+    main {
+      max-width: 820px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+    h1 { font-size: 1.9rem; color: #e6edf3; margin-bottom: 8px; }
+    .subtitle { color: #8b949e; margin-bottom: 36px; font-size: 0.95rem; }
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 32px;
+      margin-bottom: 28px;
+    }
+    .card h2 { font-size: 1.1rem; margin-bottom: 18px; color: #58a6ff; }
+    label { display: block; font-size: 0.9rem; margin-bottom: 6px; color: #8b949e; }
+    input[type="file"] {
+      width: 100%;
+      background: #0d1117;
+      border: 1px dashed #30363d;
+      border-radius: 6px;
+      padding: 24px;
+      color: #c9d1d9;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    input[type="file"]:hover { border-color: #58a6ff; }
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      background: #238636;
+      color: #fff;
+      border: none;
+      padding: 10px 26px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #2ea043; }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .info-card {
+      background: #0d1117;
+      border: 1px solid #21262d;
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .info-card .icon { font-size: 1.6rem; margin-bottom: 8px; }
+    .info-card h3 { font-size: 0.95rem; color: #e6edf3; margin-bottom: 4px; }
+    .info-card p { font-size: 0.82rem; color: #8b949e; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #1f6feb;
+      color: #fff;
+      margin-left: 6px;
+    }
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.8rem;
+      color: #484f58;
+      border-top: 1px solid #21262d;
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="logo">⬡ OpenML</span>
+    <span class="tagline">Securing AI – Free Resources to Build &amp; Train</span>
+  </header>
+
+  <main>
+    <h1>Submit Your Model</h1>
+    <p class="subtitle">
+      OpenML provides <strong>free compute</strong> to the community so anyone
+      can train, evaluate and share AI models securely.  Upload a serialized
+      scikit-learn model and we'll benchmark it against our Iris sample dataset.
+      Supports any <code>.pkl</code> pipeline.
+    </p>
+
+    <div class="card">
+      <h2>Upload Model <span class="badge">FREE FOREVER</span></h2>
+      <form action="/evaluate" method="POST" enctype="multipart/form-data">
+        <label for="model">Select your <code>.pkl</code> model file</label>
+        <input type="file" id="model" name="model" accept=".pkl" required />
+        <button class="btn" type="submit">▶ Run Evaluation</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Platform Features</h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="icon">🔬</div>
+          <h3>Iris Dataset</h3>
+          <p>Models are evaluated on the classic 4-feature Iris sample.</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">⚡</div>
+          <h3>Fast Inference</h3>
+          <p>Results returned in seconds. Timeout after 15 s.</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">🔒</div>
+          <h3>Secure by Design</h3>
+          <p>Each upload runs in its own isolated session directory – our mission is safe AI.</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">🌍</div>
+          <h3>Open to Everyone</h3>
+          <p>Classifiers, regressors, pipelines – all accepted. No account needed.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>OpenML Initiative &copy; 2026 – Securing the future of AI, one model at a time.</footer>
+</body>
+</html>

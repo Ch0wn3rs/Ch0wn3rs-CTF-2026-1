@@ -1,0 +1,94 @@
+{
+	"metadata": {
+		"host": "chall.ch0wn3rs.ninja",
+		"lastUpdated": "2026-03-03",
+		"totalChallenges": 10,
+		"deployment": "Azure Standard_B2as_v2 (2 vCPU, 8GB RAM, Canada Central)"
+	},
+	"challenges": {
+		"crypto": [
+			{
+				"id": 1,
+				"name": "LCG Oracle",
+				"type": "TCP/Crypto",
+				"port": 8001,
+				"access": "nc chall.ch0wn3rs.ninja 8001"
+			},
+			{
+				"id": 9,
+				"name": "NebulaChat",
+				"type": "TCP/ECDSA",
+				"port": 8009,
+				"access": "nc chall.ch0wn3rs.ninja 8009"
+			},
+			{
+				"id": 10,
+				"name": "Mersenne Revenge",
+				"type": "TCP/PRNG",
+				"port": 8010,
+				"access": "nc chall.ch0wn3rs.ninja 8010"
+			}
+		],
+		"web": [
+			{
+				"id": 2,
+				"name": "JWT Confusion",
+				"type": "HTTP/Auth",
+				"port": 8002,
+				"access": "http://chall.ch0wn3rs.ninja:8002"
+			},
+			{
+				"id": 3,
+				"name": "Pickle Injection",
+				"type": "HTTP/Deserialization",
+				"port": 8003,
+				"access": "http://chall.ch0wn3rs.ninja:8003"
+			},
+			{
+				"id": 4,
+				"name": "XSS Challenge",
+				"type": "HTTP/XSS",
+				"port": 8004,
+				"access": "http://chall.ch0wn3rs.ninja:8004"
+			},
+			{
+				"id": 5,
+				"name": "XXE Challenge",
+				"type": "HTTP/XXE",
+				"port": 8005,
+				"access": "http://chall.ch0wn3rs.ninja:8005"
+			},
+			{
+				"id": 6,
+				"name": "Research Portal",
+				"type": "HTTP/Web Misc",
+				"port": 8006,
+				"access": "http://chall.ch0wn3rs.ninja:8006"
+			},
+			{
+				"id": 7,
+				"name": "Link Checker",
+				"type": "HTTP/Web",
+				"port": 8007,
+				"access": "http://chall.ch0wn3rs.ninja:8007"
+			}
+		],
+		"misc": [
+			{
+				"id": 8,
+				"name": "Neural Guard",
+				"type": "TCP/ML",
+				"port": 8008,
+				"access": "nc chall.ch0wn3rs.ninja 8008"
+			}
+		]
+	},
+	"hooks": {
+		"SubagentStart": [
+			{
+				"type": "command",
+				"command": "Check the documentation at infra/README.md for instructions on how to deploy, then check if any new challenge has been added to the repo, if so, update the root docker-compose.yml file to include the new challenge and update the infra/main.bicep file to open the corresponding port(s) for the new challenge. Deploy the infrastructure using the bicep file and update the deploy.json file with the new challenge URLs."
+			}
+		]
+	}
+}

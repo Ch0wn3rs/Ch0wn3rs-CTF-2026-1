@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  xxe_challenge:
+    build: .
+    ports:
+      - "5001:5001"
+    restart: unless-stopped
+    environment:
+      - FLASK_ENV=production

@@ -1,0 +1,12 @@
+services:
+  openml:
+    build: .
+    ports:
+      - "5001:5000"
+    restart: unless-stopped
+    # Resource limits so one heavy model doesn't starve the host
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 256M

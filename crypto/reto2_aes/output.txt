@@ -1,0 +1,18 @@
+# AAES – Almost Advanced Encryption System – challenge output
+# 4 known plaintext/ciphertext pairs + encrypted flag (ECB blocks)
+
+pt1 = 00000000000000000000000000000000
+ct1 = 092411641a3726561f5e323474105a1a
+
+pt2 = 000102030405060708090a0b0c0d0e0f
+ct2 = 092513671e3220511757383f781d5415
+
+pt3 = ffffffffffffffffffffffffffffffff
+ct3 = f6dbee9be5c8d9a9e0a1cdcb8befa5e5
+
+pt4 = 42726f6b656e41455320435446212121
+ct4 = 391c0c4536282e626e64537a13285a22
+
+# Flag ciphertext (2 × 16-byte ECB blocks, PKCS#7 padded):
+flag_ct_block1 = 70166d576704507d09787479747d461b
+flag_ct_block2 = 2a0436040e5f630f60295c457e554339

@@ -1,0 +1,11 @@
+services:
+  boringcorp:
+    build: .
+    ports:
+      - "5002:5000"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 128M

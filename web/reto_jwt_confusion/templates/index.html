@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boring Corp – Employee Portal</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #e0e0e0;
+    }
+    .container {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    }
+    .logo {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+      color: #ffffff;
+    }
+    .tagline {
+      text-align: center;
+      color: #9b9bc0;
+      font-size: 0.85rem;
+      margin-bottom: 32px;
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: #a9b0c8;
+      margin-bottom: 6px;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.95rem;
+      margin-bottom: 18px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus { border-color: #7c71f5; }
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, #7c71f5, #5e55d6);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    #msg {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      text-align: center;
+      color: #f87171;
+      min-height: 20px;
+    }
+    #msg.ok { color: #4ade80; }
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin: 28px 0;
+    }
+    .info {
+      font-size: 0.78rem;
+      color: #6b6b9a;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .info code {
+      background: rgba(255,255,255,0.08);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: #a5b4fc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">🏢</div>
+    <h1>Boring Corp</h1>
+    <p class="tagline">Employee Portal – Corporate Single Sign-On</p>
+
+    <form id="loginForm">
+      <label for="username">Employee ID</label>
+      <input type="text" id="username" placeholder="employee.name" autocomplete="off" />
+
+      <button class="btn" type="submit">Access Portal</button>
+      <p id="msg"></p>
+    </form>
+
+    <hr class="divider" />
+
+    <p class="info">
+      Boring Corp uses <code>RS256</code> JWT tokens for SSO.<br />
+      Partner integrations may verify tokens using our public key at
+      <code><a href="/api/public-key" style="color:#a5b4fc">/api/public-key</a></code>.
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const msg  = document.getElementById('msg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.textContent = '';
+      msg.className = '';
+
+      const username = document.getElementById('username').value.trim();
+      if (!username) { msg.textContent = 'Employee ID is required.'; return; }
+
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username }),
+      });
+      const data = await res.json();
+
+      if (data.token) {
+        localStorage.setItem('jwt', data.token);
+        msg.className = 'ok';
+        msg.textContent = 'Signed in! Redirecting…';
+        setTimeout(() => window.location.href = '/dashboard', 800);
+      } else {
+        msg.textContent = data.error || 'Login failed.';
+      }
+    });
+  </script>
+</body>
+</html>

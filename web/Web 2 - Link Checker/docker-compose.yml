@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  web-2-link-checker:
+    build: .
+    ports:
+      - "10002:5000"
+    restart: always

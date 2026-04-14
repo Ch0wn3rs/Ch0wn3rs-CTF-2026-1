@@ -1,0 +1,7 @@
+services:
+  mersenne_revenge:
+    build: .
+    container_name: reto4_mersenne
+    ports:
+      - "1337:1337"
+    restart: unless-stopped

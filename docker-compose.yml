@@ -1,0 +1,92 @@
+###############################################################################
+# CTF-Marzo2 – Unified docker-compose
+# Each challenge is exposed on a unique host port.
+#
+#   Challenge                      Host Port
+#   ────────────────────────────── ──────────
+#   crypto  / reto1_lcg             8001
+#   crypto  / reto3_nebulachat      8009
+#   crypto  / reto4_mersenne        8010
+#   web     / reto_jwt_confusion    8002
+#   web     / reto_pkl_injection    8003
+#   web     / reto_xss              8004
+#   web     / reto_xxe              8005
+#   web     / Web 1 - Research      8006
+#   web     / Web 2 - Link Checker  8007
+#   misc    / Misc 1 - Neural Guard 8008
+###############################################################################
+
+services:
+
+  # ── Crypto ────────────────────────────────────────────────────────────────
+  lcg_oracle:
+    build: ./crypto/reto1_lcg
+    ports:
+      - "8001:1337"
+    restart: unless-stopped
+
+  mersenne_revenge:
+    build: ./crypto/reto4_mersenne
+    ports:
+      - "8010:1337"
+    restart: unless-stopped
+
+  # ── Web ───────────────────────────────────────────────────────────────────
+  jwt_confusion:
+    build: ./web/reto_jwt_confusion
+    ports:
+      - "8002:5000"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 128M
+
+  pkl_injection:
+    build: ./web/reto_pkl_injection
+    ports:
+      - "8003:5000"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 256M
+
+  xss_challenge:
+    build: ./web/reto_xss
+    ports:
+      - "8004:5000"
+    restart: unless-stopped
+    environment:
+      - FLASK_ENV=production
+
+  xxe_challenge:
+    build: ./web/reto_xxe
+    ports:
+      - "8005:5001"
+    restart: unless-stopped
+    environment:
+      - FLASK_ENV=production
+
+  # ── New Web / Misc challenges ──────────────────────────────────────────────
+  web1_research_portal:
+    build: "./web/Web 1 - Research Portal"
+    ports:
+      - "8006:5000"
+    restart: unless-stopped
+    environment:
+      - FLASK_ENV=production
+
+  web2_link_checker:
+    build: "./web/Web 2 - Link Checker"
+    ports:
+      - "8007:5000"
+    restart: unless-stopped
+
+  misc1_neural_guard:
+    build: "./Misc/Misc 1 - Neural Guard"
+    ports:
+      - "8008:1337"
+    restart: unless-stopped
