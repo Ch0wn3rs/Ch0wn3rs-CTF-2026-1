@@ -164,17 +164,6 @@ curl http://chall.ch0wn3rs.ninja:8007    # Link Checker
 
 ---
 
-## 📚 Infrastructure & Deployment
-
-See [infra/README.md](infra/README.md) for:
-- Architecture overview
-- Deployment procedures
-- Challenge updates
-- Troubleshooting
-- Infrastructure as Code (Bicep)
-
----
-
 ## 🗂️ Repository Structure
 
 ```
@@ -207,10 +196,7 @@ Ch0wn3rs-CTF-2026-1/
 │   ├── reto2_territorio/                # Territorio Chown3rs (local)
 │   ├── Echoes in the Wire/              # Echoes in the Wire (local)
 │   └── Synthesized Signal/              # Synthesized Signal (local)
-├── docker-compose.yml                    # Unified orchestration (9 services)
-└── infra/
-    ├── main.bicep                       # Azure IaC template
-    └── README.md                        # Deployment documentation
+└── docker-compose.yml                    # Unified orchestration (9 services)
 ```
 
 ---
@@ -220,7 +206,6 @@ Ch0wn3rs-CTF-2026-1/
 - ✅ **21 Challenges** across 7 categories
 - ✅ **9 Networked Services** (Docker Containerized with unified compose)
 - ✅ **12 Local Challenges** (files distributed to players)
-- ✅ **Azure Deployed** (Standard_B2as_v2, Canada Central)
 - ⏱️ **Last Updated:** April 14, 2026
 
 ---
@@ -229,9 +214,5 @@ Ch0wn3rs-CTF-2026-1/
 
 - **Main Website:** https://ch0wn3rs.ninja
 - **Challenge Host:** chall.ch0wn3rs.ninja
-- **SSH Access:** `ssh ctfadmin@chall.ch0wn3rs.ninja` (Authorized keys only)
-- **Documentation:** [infra/README.md](infra/README.md)
 
 ---
-
-*For infrastructure updates, maintenance procedures, or adding new challenges, see [infra/README.md](infra/README.md).*
